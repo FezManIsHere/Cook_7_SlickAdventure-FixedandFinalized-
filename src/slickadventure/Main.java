@@ -1,6 +1,4 @@
 package slickadventure;
-
-
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.*;
 public class Main extends StateBasedGame{
@@ -15,12 +13,10 @@ public class Main extends StateBasedGame{
       this.addState(new Lose(xSize, ySize));
       this.addState(new Win(xSize, ySize));
    }
-
    public void initStatesList(GameContainer gc) throws SlickException{
       this.getState(play).init(gc, this);
       this.enterState(play);
    }
-
    public static void main(String[] args) {
       AppGameContainer appgc;
       try{
