@@ -14,7 +14,7 @@ public class Orb {
         this.y = y;
         this.isVisible = false;
         this.orbpic = new Image("res/Orbs/Ninja_12.png");
-        this.hitbox = new Rectangle (a, b, 32, 32);
+        this.hitbox = new Rectangle (a, b, 96, 96);
     }
     /*
     Getters and setters are a common concept in Java,

@@ -16,7 +16,7 @@ public class AGE extends BasicGameState {
         public ArrayList<Statue> winning = new ArrayList();
         public Player playerguy;
         public Orb magic8ball;
-        public Enemy baddy;
+        public Enemy baddy, baddy1, baddy2;
         public ArrayList<Enemy> dudes = new ArrayList();
 	private static TiledMap grassMap;
 	private static AppGameContainer app;
@@ -50,14 +50,18 @@ public class AGE extends BasicGameState {
                 int yBlock = (int) yAxis;
                 if (!Blocked.blocked[xBlock][yBlock]) {
                     if (yBlock % 27 == 0 && xBlock % 37 == 0) {
-                        Enemy e = new Enemy(xAxis * SIZE, yAxis * SIZE);
-                        dudes.add(e);
+                        
                     }
                 }
 
             }
         }
-
+                baddy = new Enemy(300, 300);
+                baddy1 = new Enemy(500, 500);
+                baddy2 = new Enemy(700, 700);
+                dudes.add(baddy);
+                dudes.add(baddy1);
+                dudes.add(baddy2);
                 artifact = new Statue(3070, 75);
                 winning.add(artifact);
                 playerguy = new Player();
@@ -65,7 +69,7 @@ public class AGE extends BasicGameState {
         }
         public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
 	throws SlickException {
-		camera.centerOn((int) Player.x, (int) Player.y);
+                camera.centerOn((int) Player.x, (int) Player.y);
 		camera.drawMap();
 		camera.translateGraphics();
 		Player.sprite.draw((int) Player.x, (int) Player.y);
@@ -76,7 +80,12 @@ public class AGE extends BasicGameState {
                 if (magic8ball.isIsVisible()) {
                     magic8ball.orbpic.draw(magic8ball.getX(), magic8ball.getY());
                 }
-            });
+                });
+            for (Enemy e : dudes) {
+                if (e.isVisible) {
+                    e.currentanime.draw(e.Bx, e.By);
+                }
+            }
         }
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 	throws SlickException {
@@ -117,9 +126,8 @@ public class AGE extends BasicGameState {
                     magic8ball.setY ((int)playerguy.y);
                     magic8ball.hitbox.setX(magic8ball.getX());
                     magic8ball.hitbox.setY(magic8ball.getY());
-                    
-                    
-                    magic8ball.setIsVisible(!magic8ball.isIsVisible());
+                    magic8ball.setIsVisible(true);
+                    //magic8ball.setIsVisible(!magic8ball.isIsVisible());
                 }
 		Player.rect.setLocation(Player.getplayershitboxX(), Player.getplayershitboxY());
                 winning.stream().filter((s) -> (Player.rect.intersects(s.hitbox))).filter((s) -> (Statue.isvisible)).map((s) -> {
@@ -132,8 +140,8 @@ public class AGE extends BasicGameState {
                 sbg.enterState(3, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
             });
 		for (Enemy e: dudes) {
-                    if (magic8ball.hitbox intersects(e.rect)) {
-            
+                    if (magic8ball.hitbox.intersects(e.rect)) {
+                        e.isVisible = false;
         }
                 }
                 
@@ -142,7 +150,10 @@ public class AGE extends BasicGameState {
 			makevisible();
 			sbg.enterState(2, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
 		}
-	}
+	for (Enemy r : dudes) {
+            r.move();
+        }
+        }
 	public int getID() {
 		return 1;
 	}
