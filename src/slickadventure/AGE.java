@@ -15,8 +15,8 @@ public class AGE extends BasicGameState {
 	public Statue artifact;
         public ArrayList<Statue> winning = new ArrayList();
         public Player playerguy;
-        public Orb magic8ball;
-        public Enemy baddy, baddy1, baddy2;
+        public static Orb magic8ball;
+        public static Enemy baddy, baddy1, baddy2;
         public ArrayList<Enemy> dudes = new ArrayList();
 	private static TiledMap grassMap;
 	private static AppGameContainer app;
@@ -56,9 +56,9 @@ public class AGE extends BasicGameState {
 
             }
         }
-                baddy = new Enemy(300, 300);
-                baddy1 = new Enemy(500, 500);
-                baddy2 = new Enemy(700, 700);
+                baddy = new Enemy(600, 600);
+                baddy1 = new Enemy(1000, 1000);
+                baddy2 = new Enemy(1400, 1400);
                 dudes.add(baddy);
                 dudes.add(baddy1);
                 dudes.add(baddy2);
@@ -140,18 +140,30 @@ public class AGE extends BasicGameState {
                 sbg.enterState(3, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
             });
 		for (Enemy e: dudes) {
+                    if (Player.rect.intersects(e.rect)) {
+                        if (e.isVisible) {
+                        Player.health -= 10000;
+                        e.isVisible = false;
+                        }
+                    }
                     if (magic8ball.hitbox.intersects(e.rect)) {
                         e.isVisible = false;
-        }
+                    }
+                    if (magic8ball.isIsVisible()) {
+                        if (magic8ball.gettimeExists() > 0) {
+                            magic8ball.setX(magic8ball.getX() + 5);
+                            
+                        }
+                    }
                 }
-                
                 Player.health -= counter/1000;
 		if(Player.health <= 0){
 			makevisible();
 			sbg.enterState(2, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
 		}
-	for (Enemy r : dudes) {
-            r.move();
+                
+	for (Enemy e : dudes) {
+            e.move();
         }
         }
 	public int getID() {

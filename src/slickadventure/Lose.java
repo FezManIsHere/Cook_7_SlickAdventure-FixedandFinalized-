@@ -35,10 +35,21 @@ public class Lose extends BasicGameState {
     public void keyReleased(int key, char c) {
         switch (key) {
             case Input.KEY_1:
-                Player.health  = 90000;
+                Player.health  = 100000;
                 Player.speed = .4f;
                 AGE.counter = 0;
                 Statue.isvisible = true;
+                Enemy.isAlive = true;
+                AGE.baddy.Bx = 600;
+                AGE.baddy.By = 600;
+                AGE.baddy1.Bx = 1000;
+                AGE.baddy1.By = 1000;
+                AGE.baddy2.Bx = 1400;
+                AGE.baddy2.By = 1400;
+                AGE.baddy.isVisible = true;
+                AGE.baddy1.isVisible = true;
+                AGE.baddy2.isVisible = true;
+                AGE.magic8ball.setIsVisible(false);
                 Player.x = 35f;
                 Player.y = 34f;
                 game.enterState(1, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
