@@ -56,9 +56,9 @@ public class AGE extends BasicGameState {
 
             }
         }
-                baddy = new Enemy(600, 600);
-                baddy1 = new Enemy(1000, 1000);
-                baddy2 = new Enemy(1400, 1400);
+                baddy = new Enemy(1000, 1000);
+                baddy1 = new Enemy(1500, 1500);
+                baddy2 = new Enemy(2000, 2000);
                 dudes.add(baddy);
                 dudes.add(baddy1);
                 dudes.add(baddy2);
@@ -96,7 +96,28 @@ public class AGE extends BasicGameState {
 		double rightlimit = (grassMap.getWidth() * SIZE) - (SIZE * 0.75);
 		float projectedright = Player.x + fdelta + SIZE;
 		boolean cangoright = projectedright < rightlimit;
-		if (input.isKeyDown(Input.KEY_UP)) {
+		if (input.isKeyDown(Input.KEY_SPACE)) {
+                    magic8ball.setX ((int)playerguy.x);
+                    magic8ball.setY ((int)playerguy.y);
+                    //magic8ball.hitbox.setX(magic8ball.getX());
+                    //magic8ball.hitbox.setY(magic8ball.getY());
+                    magic8ball.setIsVisible(true);
+                    magic8ball.setTimeExists(50);
+                    if (playerguy.sprite == playerguy.right) {
+                        magic8ball.xmove = 10;
+                        magic8ball.ymove = 0;
+                    } else if (playerguy.sprite == playerguy.left) {
+                        magic8ball.xmove = -10;
+                        magic8ball.ymove = 0;
+                    } else if (playerguy.sprite == playerguy.up) {
+                        magic8ball.xmove = 0;
+                        magic8ball.ymove = -10;
+                    } else if (playerguy.sprite == playerguy.down) {
+                        magic8ball.xmove = 0;
+                        magic8ball.ymove = 10;
+                    }
+                    //magic8ball.setIsVisible(!magic8ball.isIsVisible());
+                }else if (input.isKeyDown(Input.KEY_UP)) {
 			Player.sprite = Player.up;
 			float fdsc = (float) (fdelta - (SIZE * .15));
 			if (!(isBlocked(Player.x, Player.y - fdelta) || isBlocked((float) (Player.x + SIZE + 1.5), Player.y - fdelta))) {
@@ -121,14 +142,7 @@ public class AGE extends BasicGameState {
 				Player.sprite.update(delta);
 				Player.x += fdelta;
 			} 
-		} else if (input.isKeyDown(Input.KEY_SPACE)) {
-                    magic8ball.setX ((int)playerguy.x);
-                    magic8ball.setY ((int)playerguy.y);
-                    magic8ball.hitbox.setX(magic8ball.getX());
-                    magic8ball.hitbox.setY(magic8ball.getY());
-                    magic8ball.setIsVisible(true);
-                    //magic8ball.setIsVisible(!magic8ball.isIsVisible());
-                }
+		} 
 		Player.rect.setLocation(Player.getplayershitboxX(), Player.getplayershitboxY());
                 winning.stream().filter((s) -> (Player.rect.intersects(s.hitbox))).filter((s) -> (Statue.isvisible)).map((s) -> {
                     Statue.isvisible = false;
@@ -146,16 +160,26 @@ public class AGE extends BasicGameState {
                         e.isVisible = false;
                         }
                     }
+                
+                }
+                for (Enemy e: dudes) {
                     if (magic8ball.hitbox.intersects(e.rect)) {
-                        e.isVisible = false;
-                    }
-                    if (magic8ball.isIsVisible()) {
-                        if (magic8ball.gettimeExists() > 0) {
-                            magic8ball.setX(magic8ball.getX() + 5);
-                            
+                        if (e.isVisible) {
+                            e.isVisible = false;
                         }
                     }
                 }
+                if (magic8ball.isIsVisible()) {
+                        if (magic8ball.getTimeExists() > 0) {
+                            magic8ball.setX(magic8ball.x += magic8ball.xmove);
+                            magic8ball.setY(magic8ball.y += magic8ball.ymove);
+                            magic8ball.hitbox.setX(magic8ball.getX());
+                            magic8ball.hitbox.setY(magic8ball.getY());
+                            magic8ball.countdown();
+                        } else {
+                            magic8ball.setIsVisible(false);
+                        }
+                    }
                 Player.health -= counter/1000;
 		if(Player.health <= 0){
 			makevisible();

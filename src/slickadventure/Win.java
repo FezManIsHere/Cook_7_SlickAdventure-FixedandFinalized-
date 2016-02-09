@@ -47,12 +47,12 @@ public class Win extends BasicGameState {
                 Player.y = 34f;
                 Statue.isvisible = true;
                 Enemy.isAlive = true;
-                AGE.baddy.Bx = 600;
-                AGE.baddy.By = 600;
-                AGE.baddy1.Bx = 1000;
-                AGE.baddy1.By = 1000;
-                AGE.baddy2.Bx = 1400;
-                AGE.baddy2.By = 1400;
+                AGE.baddy.Bx = 1000;
+                AGE.baddy.By = 1000;
+                AGE.baddy1.Bx = 1500;
+                AGE.baddy1.By = 1500;
+                AGE.baddy2.Bx = 2000;
+                AGE.baddy2.By = 2000;
                 AGE.magic8ball.setIsVisible(false);
                 AGE.baddy.isVisible = true;
                 AGE.baddy1.isVisible = true;

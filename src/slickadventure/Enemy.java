@@ -182,7 +182,7 @@ public class Enemy {
         if (this.canigoup()) {
             fdelta = Player.getpdelta();
             this.currentanime = skup;
-            this.By -= fdelta / 2;
+            this.By -= fdelta;
             this.rect.setLocation(this.Bx, this.By);
         } else {
             this.currentanime = skwait;
@@ -193,7 +193,7 @@ public class Enemy {
         if (this.canigodown()) {
             fdelta = Player.getpdelta();
             this.currentanime = skdown;
-            this.By += fdelta / 2;
+            this.By += fdelta;
             this.rect.setLocation(this.Bx, this.By);
         }
     }
@@ -203,7 +203,7 @@ public class Enemy {
         if (this.canigoleft()) {
             fdelta = Player.getpdelta();
             this.currentanime = skleft;
-            this.Bx -= fdelta / 2;
+            this.Bx -= fdelta;
             this.rect.setLocation(this.Bx, this.By);
         }
     }
@@ -212,7 +212,7 @@ public class Enemy {
         if (this.canigoright()) {
             fdelta = Player.getpdelta();
             this.currentanime = skright;
-            this.Bx += fdelta / 2;
+            this.Bx += fdelta;
             this.rect.setLocation(this.Bx, this.By);
         }
     }

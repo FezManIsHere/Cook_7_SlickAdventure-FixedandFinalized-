@@ -4,8 +4,8 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
 public class Orb {
-    private int x, y, width, height;
-    private int dmg, hitboxX, hitboxY;
+    public int x, y, width, height, xmove, ymove;
+    private int dmg, hitboxX, hitboxY, timeExists;
     private boolean isVisible;
     Image orbpic;
     Shape hitbox;
@@ -13,8 +13,20 @@ public class Orb {
         this.x = x;
         this.y = y;
         this.isVisible = false;
+        this.timeExists = 50;
         this.orbpic = new Image("res/Orbs/Ninja_12.png");
         this.hitbox = new Rectangle (a, b, 96, 96);
+    }
+
+    public int getTimeExists() {
+        return timeExists;
+    }
+
+    public void setTimeExists(int timeExists) {
+        this.timeExists = timeExists;
+    }
+    public void countdown() {
+        this.timeExists--;
     }
     /*
     Getters and setters are a common concept in Java,
