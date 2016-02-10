@@ -57,8 +57,8 @@ public class AGE extends BasicGameState {
             }
         }
                 baddy = new Enemy(1000, 1000);
-                baddy1 = new Enemy(1500, 1500);
-                baddy2 = new Enemy(2000, 2000);
+                baddy1 = new Enemy(2000, 2000);
+                baddy2 = new Enemy(3000, 3000);
                 dudes.add(baddy);
                 dudes.add(baddy1);
                 dudes.add(baddy2);
@@ -104,7 +104,9 @@ public class AGE extends BasicGameState {
                     magic8ball.setIsVisible(true);
                     magic8ball.setTimeExists(50);
                     if (playerguy.sprite == playerguy.right) {
-                        magic8ball.xmove = 10;
+                        if (magic8ball.getTimeExists() > 0 && (!isBlocked(magic8ball.x + 10, magic8ball.y))) {
+                            magic8ball.xmove = 10;
+                        }
                         magic8ball.ymove = 0;
                     } else if (playerguy.sprite == playerguy.left) {
                         magic8ball.xmove = -10;

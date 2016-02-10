@@ -42,10 +42,10 @@ public class Lose extends BasicGameState {
                 Enemy.isAlive = true;
                 AGE.baddy.Bx = 1000;
                 AGE.baddy.By = 1000;
-                AGE.baddy1.Bx = 1500;
-                AGE.baddy1.By = 1500;
-                AGE.baddy2.Bx = 2000;
-                AGE.baddy2.By = 2000;
+                AGE.baddy1.Bx = 2000;
+                AGE.baddy1.By = 2000;
+                AGE.baddy2.Bx = 3000;
+                AGE.baddy2.By = 3000;
                 AGE.baddy.isVisible = true;
                 AGE.baddy1.isVisible = true;
                 AGE.baddy2.isVisible = true;

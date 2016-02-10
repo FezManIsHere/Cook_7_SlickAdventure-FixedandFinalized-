@@ -15,7 +15,7 @@ public class Orb {
         this.isVisible = false;
         this.timeExists = 50;
         this.orbpic = new Image("res/Orbs/Ninja_12.png");
-        this.hitbox = new Rectangle (a, b, 96, 96);
+        this.hitbox = new Rectangle (a, b, 64, 64);
     }
 
     public int getTimeExists() {
@@ -100,7 +100,7 @@ public class Orb {
     public void setLocation(int a, int b) {
         this.setX((int) Player.x);
         this.setY((int) Player.y);
-        this.setHitboxX((int) Player.x + 5);
-        this.setHitboxY((int) Player.y - 10);
+        this.setHitboxX((int) Player.x);
+        this.setHitboxY((int) Player.y);
     }
 }
