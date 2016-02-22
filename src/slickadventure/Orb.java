@@ -98,9 +98,9 @@ public class Orb {
         this.hitbox = hitbox;
     }
     public void setLocation(int a, int b) {
-        this.setX((int) Player.x);
-        this.setY((int) Player.y);
-        this.setHitboxX((int) Player.x);
-        this.setHitboxY((int) Player.y);
+        this.setX((int) AGE.playerguy.x);
+        this.setY((int) AGE.playerguy.y);
+        this.setHitboxX((int) AGE.playerguy.x);
+        this.setHitboxY((int) AGE.playerguy.y);
     }
 }

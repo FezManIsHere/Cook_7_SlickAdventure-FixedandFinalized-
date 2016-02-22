@@ -89,7 +89,7 @@ public class Enemy {
         skup.addFrame(skeletonSS.getSprite(6, 8), 330);
         skup.addFrame(skeletonSS.getSprite(7, 8), 330);
         skup.addFrame(skeletonSS.getSprite(8, 8), 330);
-
+        
         skdown = new Animation();
         skdown.setAutoUpdate(false);
         skdown.addFrame(skeletonSS.getSprite(0, 10), 330);
@@ -157,12 +157,12 @@ public class Enemy {
 
 
     private boolean canigoup() {
-        fdelta = Player.getpdelta();
+        fdelta = AGE.playerguy.getpdelta();
         return (!isBlocked(this.Bx, this.By - fdelta) || !isBlocked(this.Bx + SIZE - 1, this.By - fdelta));
     }
 
     private boolean canigodown() {
-        fdelta = Player.getpdelta();
+        fdelta = AGE.playerguy.getpdelta();
         return ((!isBlocked(this.Bx, this.By + SIZE + 8) || !isBlocked(this.Bx + SIZE - 1, this.By + SIZE + fdelta)));
     }
 
@@ -172,7 +172,7 @@ public class Enemy {
 
     private boolean canigoleft() {
 
-        fdelta = Player.getpdelta();
+        fdelta = AGE.playerguy.getpdelta();
 
         return (!isBlocked(this.Bx - SIZE / 2, this.By + SIZE / 2) || !isBlocked(this.Bx - SIZE, this.By) || !isBlocked(this.Bx - fdelta, this.By + SIZE - 16));
     }
@@ -180,7 +180,7 @@ public class Enemy {
 
     void moveup() throws SlickException {
         if (this.canigoup()) {
-            fdelta = Player.getpdelta();
+            fdelta = AGE.playerguy.getpdelta();
             this.currentanime = skup;
             this.By -= fdelta;
             this.rect.setLocation(this.Bx, this.By);
@@ -191,7 +191,7 @@ public class Enemy {
 
     void movedown() throws SlickException {
         if (this.canigodown()) {
-            fdelta = Player.getpdelta();
+            fdelta = AGE.playerguy.getpdelta();
             this.currentanime = skdown;
             this.By += fdelta;
             this.rect.setLocation(this.Bx, this.By);
@@ -201,7 +201,7 @@ public class Enemy {
 
     void moveleft() throws SlickException {
         if (this.canigoleft()) {
-            fdelta = Player.getpdelta();
+            fdelta = AGE.playerguy.getpdelta();
             this.currentanime = skleft;
             this.Bx -= fdelta;
             this.rect.setLocation(this.Bx, this.By);
@@ -210,7 +210,7 @@ public class Enemy {
 
     void moveright() throws SlickException {
         if (this.canigoright()) {
-            fdelta = Player.getpdelta();
+            fdelta = AGE.playerguy.getpdelta();
             this.currentanime = skright;
             this.Bx += fdelta;
             this.rect.setLocation(this.Bx, this.By);
@@ -219,19 +219,19 @@ public class Enemy {
 
 
     void setdirection() {
-        if (Player.getplayersY() < this.By) {
+        if (AGE.playerguy.getplayersY() < this.By) {
             this.mydirection = Direction.UP;
         }
 
-        if ((Player.getplayersY() > this.By)) {
+        if ((AGE.playerguy.getplayersY() > this.By)) {
             this.mydirection = Direction.DOWN;
         }
 
-        if ((Player.getplayersX() > this.Bx)) {
+        if ((AGE.playerguy.getplayersX() > this.Bx)) {
             this.mydirection = Direction.RIGHT;
         }
 
-        if ((Player.getplayersX() < this.Bx) && canigoleft()) {
+        if ((AGE.playerguy.getplayersX() < this.Bx) && canigoleft()) {
             this.mydirection = Direction.LEFT;
         } else {
             this.mydirection = Direction.DOWN;
@@ -240,16 +240,16 @@ public class Enemy {
 
     void move() throws SlickException {
         if (true){
-            if (this.Bx > Player.getplayersX()) {
+            if (this.Bx > AGE.playerguy.getplayersX()) {
                 this.moveleft();
-            } else if (this.Bx < Player.getplayersX()) {
+            } else if (this.Bx < AGE.playerguy.getplayersX()) {
                 this.moveright();
             } else {
             } 
             
-            if (this.By > Player.getplayersY()) {
+            if (this.By > AGE.playerguy.getplayersY()) {
                 this.moveup();
-            } else if (this.By < Player.getplayersY()) {
+            } else if (this.By < AGE.playerguy.getplayersY()) {
                 this.movedown();
             } else {
                 int r = (int) (Math.random() * (5 - 1)) + 1;

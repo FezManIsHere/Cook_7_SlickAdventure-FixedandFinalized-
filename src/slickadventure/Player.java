@@ -5,17 +5,17 @@ import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
 public class Player {
-        public static float x = 35f;
-	public static float y = 34f;
-	public static int health = 100000;
-	public static float speed = .4f;
-	static float hitboxX = x + 8f;
-	static float hitboxY = y + 8f;
-	private static int startX, startY, width = 30, height = 42;
-	public static Shape rect = new Rectangle(getplayershitboxX(),
+        public float x = 35f;
+	public float y = 34f;
+	public int health = 100000;
+	public float speed = .4f;
+	 float hitboxX = x + 8f;
+	 float hitboxY = y + 8f;
+	private int startX, startY, width = 30, height = 42;
+	public Shape rect = new Rectangle(getplayershitboxX(),
 			getplayershitboxY(), width, height);
-	public static float pdelta;
-	public static Animation playeranime, up, down, left, right, sprite, wait;
+	public float pdelta;
+	public  Animation playeranime, up, down, left, right, sprite, wait;
         Player() throws SlickException {
             SpriteSheet runningSS = new SpriteSheet(
 				"res/MageOP.png",64, 64, 0);
@@ -71,28 +71,28 @@ public class Player {
 		wait.addFrame(runningSS.getSprite(3, 14), 733);
 		sprite = wait;
         }
-	public static void setpdelta(float somenum) {
+	public  void setpdelta(float somenum) {
 		pdelta = somenum;
 	}
-	public static float getpdelta() {
+	public  float getpdelta() {
 		return pdelta;
 	}
-	public static float getplayersX() {
+	public  float getplayersX() {
 		return x;
 	}
-	public static float getplayersY() {
+	public  float getplayersY() {
 		return y;
 	}
-	public static float getplayershitboxX() {
+	public  float getplayershitboxX() {
 		return x + 18f;
 	}
-	public static float getplayershitboxY() {
+	public  float getplayershitboxY() {
 		return y + 18f;
 	}
-	public static void setplayershitboxX() {
+	public  void setplayershitboxX() {
 		hitboxX = getplayershitboxX();
 	}
-	public static void setplayershitboxY() {
+	public  void setplayershitboxY() {
 		hitboxY = getplayershitboxY();
 	}
 }    
