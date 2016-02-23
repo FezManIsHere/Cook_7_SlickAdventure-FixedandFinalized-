@@ -1,10 +1,7 @@
 package slickadventure;
-
-
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.tiled.TiledMap;
-
 public class Camera {
    protected TiledMap map;
    protected int numTilesX;
@@ -32,13 +29,9 @@ public class Camera {
       if(cameraX < 0) cameraX = 0;
       if(cameraX + gc.getWidth() > mapWidth) cameraX = mapWidth -
 gc.getWidth();
-    
-
-      //if the camera is at the top or bottom edge lock it to prevent a black bar
-
-      if(cameraY < 0) cameraY = 0;
-
-      if(cameraY + gc.getHeight() > mapHeight) cameraY = mapHeight -
+    //if the camera is at the top or bottom edge lock it to prevent a black bar
+    if(cameraY < 0) cameraY = 0;
+    if(cameraY + gc.getHeight() > mapHeight) cameraY = mapHeight -
 
 gc.getHeight();
 

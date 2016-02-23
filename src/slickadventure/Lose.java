@@ -49,7 +49,7 @@ public class Lose extends BasicGameState {
                 AGE.baddy.isVisible = true;
                 AGE.baddy1.isVisible = true;
                 AGE.baddy2.isVisible = true;
-                AGE.magic8ball.setIsVisible(false);
+                AGE.bolt.setIsVisible(false);
                 AGE.playerguy.x = 35f;
                 AGE.playerguy.y = 34f;
                 game.enterState(1, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));

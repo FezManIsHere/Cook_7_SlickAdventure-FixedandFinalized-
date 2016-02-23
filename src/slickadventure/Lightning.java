@@ -3,13 +3,13 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
-public class Orb {
+public class Lightning {
     public int x, y, width, height, xmove, ymove;
     private int dmg, hitboxX, hitboxY, timeExists;
     private boolean isVisible;
     Image orbpic;
     Shape hitbox;
-    public Orb(int a, int b) throws SlickException {
+    public Lightning(int a, int b) throws SlickException {
         this.x = x;
         this.y = y;
         this.isVisible = false;

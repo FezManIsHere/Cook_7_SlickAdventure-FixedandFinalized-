@@ -16,7 +16,7 @@ public class AGE extends BasicGameState {
 	public Statue artifact;
         public ArrayList<Statue> winning = new ArrayList();
         public static Player playerguy;
-        public static Orb magic8ball;
+        public static Lightning bolt;
         public static Enemy baddy, baddy1, baddy2;
         public ArrayList<Enemy> dudes = new ArrayList();
 	private static TiledMap grassMap;
@@ -66,7 +66,7 @@ public class AGE extends BasicGameState {
                 artifact = new Statue(3070, 75);
                 winning.add(artifact);
                 playerguy = new Player();
-                magic8ball = new Orb((int) playerguy.x + 5, (int) playerguy.y + 5);
+                bolt = new Lightning((int) playerguy.x + 5, (int) playerguy.y + 5);
         }
         public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
 	throws SlickException {
@@ -74,13 +74,13 @@ public class AGE extends BasicGameState {
 		camera.drawMap();
 		camera.translateGraphics();
 		playerguy.sprite.draw((int) playerguy.x, (int) playerguy.y);
-		g.setFont((org.newdawn.slick.Font) new Font("TimesRoman", Font.PLAIN, 10)); 
+		//g.setFont((org.newdawn.slick.Font) new Font("TimesRoman", Font.PLAIN, 10)); 
                 g.drawString("Time Left: " + playerguy.health/1000, camera.cameraX + 10,
 		camera.cameraY + 10);
                 winning.stream().filter((s) -> (Statue.isvisible)).forEach((s) -> {
                     s.currentImage.draw(s.x, s.y);
-                if (magic8ball.isIsVisible()) {
-                    magic8ball.orbpic.draw(magic8ball.getX(), magic8ball.getY());
+                if (bolt.isIsVisible()) {
+                    bolt.orbpic.draw(bolt.getX(), bolt.getY());
                 }
                 });
             for (Enemy e : dudes) {
@@ -99,28 +99,28 @@ public class AGE extends BasicGameState {
 		float projectedright = playerguy.x + fdelta + SIZE;
 		boolean cangoright = projectedright < rightlimit;
 		if (input.isKeyDown(Input.KEY_SPACE)) {
-                    magic8ball.setX ((int)playerguy.x);
-                    magic8ball.setY ((int)playerguy.y);
-                    //magic8ball.hitbox.setX(magic8ball.getX());
-                    //magic8ball.hitbox.setY(magic8ball.getY());
-                    magic8ball.setIsVisible(true);
-                    magic8ball.setTimeExists(50);
+                    bolt.setX ((int)playerguy.x);
+                    bolt.setY ((int)playerguy.y);
+                    //magic8ball.hitbox.setX(bolt.getX());
+                    //magic8ball.hitbox.setY(bolt.getY());
+                    bolt.setIsVisible(true);
+                    bolt.setTimeExists(50);
                     if (playerguy.sprite == playerguy.right) {
-                        if (magic8ball.getTimeExists() > 0 && (!isBlocked(magic8ball.x + 10, magic8ball.y))) {
-                            magic8ball.xmove = 10;
+                        if (bolt.getTimeExists() > 0 && (!isBlocked(bolt.x + 10, bolt.y))) {
+                            bolt.xmove = 10;
                         }
-                        magic8ball.ymove = 0;
+                        bolt.ymove = 0;
                     } else if (playerguy.sprite == playerguy.left) {
-                        magic8ball.xmove = -10;
-                        magic8ball.ymove = 0;
+                        bolt.xmove = -10;
+                        bolt.ymove = 0;
                     } else if (playerguy.sprite == playerguy.up) {
-                        magic8ball.xmove = 0;
-                        magic8ball.ymove = -10;
+                        bolt.xmove = 0;
+                        bolt.ymove = -10;
                     } else if (playerguy.sprite == playerguy.down) {
-                        magic8ball.xmove = 0;
-                        magic8ball.ymove = 10;
+                        bolt.xmove = 0;
+                        bolt.ymove = 10;
                     }
-                    //magic8ball.setIsVisible(!magic8ball.isIsVisible());
+                    //magic8ball.setIsVisible(!bolt.isIsVisible());
                 }else if (input.isKeyDown(Input.KEY_UP)) {
 			playerguy.sprite = playerguy.up;
 			float fdsc = (float) (fdelta - (SIZE * .15));
@@ -167,21 +167,21 @@ public class AGE extends BasicGameState {
                 
                 }
                 for (Enemy e: dudes) {
-                    if (magic8ball.hitbox.intersects(e.rect)) {
+                    if (bolt.hitbox.intersects(e.rect)) {
                         if (e.isVisible) {
                             e.isVisible = false;
                         }
                     }
                 }
-                if (magic8ball.isIsVisible()) {
-                        if (magic8ball.getTimeExists() > 0) {
-                            magic8ball.setX(magic8ball.x += magic8ball.xmove);
-                            magic8ball.setY(magic8ball.y += magic8ball.ymove);
-                            magic8ball.hitbox.setX(magic8ball.getX());
-                            magic8ball.hitbox.setY(magic8ball.getY());
-                            magic8ball.countdown();
+                if (bolt.isIsVisible()) {
+                        if (bolt.getTimeExists() > 0) {
+                            bolt.setX(bolt.x += bolt.xmove);
+                            bolt.setY(bolt.y += bolt.ymove);
+                            bolt.hitbox.setX(bolt.getX());
+                            bolt.hitbox.setY(bolt.getY());
+                            bolt.countdown();
                         } else {
-                            magic8ball.setIsVisible(false);
+                            bolt.setIsVisible(false);
                         }
                     }
                 playerguy.health -= counter/1000;
