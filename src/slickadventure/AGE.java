@@ -45,6 +45,17 @@ public class AGE extends BasicGameState {
 				}
 			}
 		}
+                Trap.trap = new boolean[grassMap.getWidth()][grassMap.getHeight()];
+		for (int xAxis = 0; xAxis < grassMap.getWidth(); xAxis++) {
+			for (int yAxis = 0; yAxis < grassMap.getHeight(); yAxis++) {
+				int tileID = grassMap.getTileId(xAxis, yAxis, 1);
+				String value = grassMap.getTileProperty(tileID,
+				"trap", "false");
+                                if ("true".equals(value)) {
+                                    Trap.trap[xAxis][yAxis] = true;
+				}
+			}
+		}
                 for (int xAxis = 0; xAxis < grassMap.getWidth(); xAxis++) {
             for (int yAxis = 0; yAxis < grassMap.getHeight(); yAxis++) {
                 int xBlock = (int) xAxis;
@@ -75,7 +86,7 @@ public class AGE extends BasicGameState {
 		camera.translateGraphics();
 		playerguy.sprite.draw((int) playerguy.x, (int) playerguy.y);
 		//g.setFont((org.newdawn.slick.Font) new Font("TimesRoman", Font.PLAIN, 10)); 
-                g.drawString("Time Left: " + playerguy.health/1000, camera.cameraX + 10,
+                g.drawString("Health: " + playerguy.health, camera.cameraX + 10,
 		camera.cameraY + 10);
                 winning.stream().filter((s) -> (Statue.isvisible)).forEach((s) -> {
                     s.currentImage.draw(s.x, s.y);
@@ -91,7 +102,7 @@ public class AGE extends BasicGameState {
         }
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 	throws SlickException {
-		counter += delta;
+		//counter += delta;
 		Input input = gc.getInput();
 		float fdelta = delta * playerguy.speed;
 		playerguy.setpdelta(fdelta);
@@ -128,11 +139,17 @@ public class AGE extends BasicGameState {
 				playerguy.sprite.update(delta);
 				playerguy.y -= fdelta;
 			}
+                        if (isTrap(playerguy.x, playerguy.y - fdelta) || isTrap((float) (playerguy.x + SIZE + 1.5), playerguy.y - fdelta)) {
+				playerguy.health -= 5;
+			}
 		} else if (input.isKeyDown(Input.KEY_DOWN)) {
 			playerguy.sprite = playerguy.down;
 			if (!isBlocked(playerguy.x, playerguy.y + SIZE*2 + fdelta) && !isBlocked(playerguy.x + SIZE - 1, playerguy.y + SIZE*2 + fdelta)) {
 				playerguy.sprite.update(delta);
 				playerguy.y += fdelta;
+			}
+                        if (isTrap(playerguy.x, playerguy.y + SIZE*2 + fdelta) && !isTrap(playerguy.x + SIZE - 1, playerguy.y + SIZE*2 + fdelta)) {
+				playerguy.health -= 5;
 			}
 		} else if (input.isKeyDown(Input.KEY_LEFT)) {
 			playerguy.sprite = playerguy.left;
@@ -140,11 +157,17 @@ public class AGE extends BasicGameState {
 				playerguy.sprite.update(delta);
 				playerguy.x -= fdelta;
 			}
+                        if (isTrap(playerguy.x - fdelta, playerguy.y) || isTrap(playerguy.x - fdelta, playerguy.y + SIZE - 1)) {
+				playerguy.health -= 5;
+			}
 		} else if (input.isKeyDown(Input.KEY_RIGHT)) {
 			playerguy.sprite = playerguy.right;
                         if (cangoright && (!(isBlocked(playerguy.x + SIZE + fdelta, playerguy.y) || isBlocked(playerguy.x + SIZE + fdelta, playerguy.y + SIZE - 1)))) {
 				playerguy.sprite.update(delta);
 				playerguy.x += fdelta;
+			}
+                        if (isTrap(playerguy.x + SIZE + fdelta, playerguy.y) || isTrap(playerguy.x + SIZE + fdelta, playerguy.y + SIZE - 1)) {
+				playerguy.health -= 5;
 			} 
 		} 
 		playerguy.rect.setLocation(playerguy.getplayershitboxX(), playerguy.getplayershitboxY());
@@ -157,10 +180,12 @@ public class AGE extends BasicGameState {
             }).forEach((_item) -> {
                 sbg.enterState(3, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
             });
-		for (Enemy e: dudes) {
+		
+               
+                for (Enemy e: dudes) {
                     if (playerguy.rect.intersects(e.rect)) {
                         if (e.isVisible) {
-                        playerguy.health -= 10000;
+                        playerguy.health -= 10;
                         e.isVisible = false;
                         }
                     }
@@ -184,7 +209,7 @@ public class AGE extends BasicGameState {
                             bolt.setIsVisible(false);
                         }
                     }
-                playerguy.health -= counter/1000;
+                playerguy.health -= counter;
 		if(playerguy.health <= 0){
 			makevisible();
 			sbg.enterState(2, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
@@ -203,5 +228,10 @@ public class AGE extends BasicGameState {
 		int xBlock = (int) tx / SIZE;
 		int yBlock = (int) ty / SIZE;
 		return Blocked.blocked[xBlock][yBlock];
+	}
+        private boolean isTrap(float tx, float ty) {
+		int xBlock = (int) tx / SIZE;
+		int yBlock = (int) ty / SIZE;
+		return Trap.trap[xBlock][yBlock];
 	}
 }

@@ -7,7 +7,7 @@ import org.newdawn.slick.geom.Shape;
 public class Player {
         public float x = 35f;
 	public float y = 34f;
-	public int health = 100000;
+	public int health = 100;
 	public float speed = .4f;
 	 float hitboxX = x + 8f;
 	 float hitboxY = y + 8f;

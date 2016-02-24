@@ -40,7 +40,7 @@ public class Win extends BasicGameState {
     public void keyReleased(int key, char c) {
         switch (key) {
             case Input.KEY_1:
-                AGE.playerguy.health  = 100000;
+                AGE.playerguy.health  = 100;
                 AGE.playerguy.speed = .4f;
                 AGE.counter = 0;
                 AGE.playerguy.x = 35f;
