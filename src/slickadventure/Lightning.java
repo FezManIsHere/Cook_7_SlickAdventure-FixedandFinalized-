@@ -13,9 +13,9 @@ public class Lightning {
         this.x = x;
         this.y = y;
         this.isVisible = false;
-        this.timeExists = 50;
-        this.orbpic = new Image("res/Orbs/Ninja_12.png");
-        this.hitbox = new Rectangle (a, b, 64, 64);
+        this.timeExists = 100;
+        this.orbpic = new Image("res/plasma-globe.png");
+        this.hitbox = new Rectangle (a, b, 32, 32);
     }
 
     public int getTimeExists() {
