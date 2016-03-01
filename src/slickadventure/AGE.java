@@ -140,7 +140,8 @@ public class AGE extends BasicGameState {
 				playerguy.y -= fdelta;
                                 
 			}if (isTrap(playerguy.x, playerguy.y - fdelta) || isTrap((float) (playerguy.x + SIZE + 1.5), playerguy.y - fdelta)) {
-				playerguy.health -= 5;
+				playerguy.health -= 3;
+                                System.out.println("Ouch" + " X:" + playerguy.x + " Y:" + playerguy.y);
                             }
                         
 		} else if (input.isKeyDown(Input.KEY_DOWN)) {
@@ -149,8 +150,10 @@ public class AGE extends BasicGameState {
 				playerguy.sprite.update(delta);
 				playerguy.y += fdelta;
                                 
-			}if (isTrap(playerguy.x, playerguy.y + SIZE*2 + fdelta) && !isTrap(playerguy.x + SIZE - 1, playerguy.y + SIZE*2 + fdelta)) {
-				playerguy.health -= 5;
+                                
+			}if (isTrap(playerguy.x, playerguy.y - fdelta) || isTrap(playerguy.x + SIZE - 1, playerguy.y - fdelta)) {
+				playerguy.health -= 3;
+                                System.out.println("Ouch" + " X:" + playerguy.x + " Y:" + playerguy.y);
                             }
 		} else if (input.isKeyDown(Input.KEY_LEFT)) {
 			playerguy.sprite = playerguy.left;
@@ -159,7 +162,8 @@ public class AGE extends BasicGameState {
 				playerguy.x -= fdelta;
                                 
 			}if (isTrap(playerguy.x - fdelta, playerguy.y) || isTrap(playerguy.x - fdelta, playerguy.y + SIZE - 1)) {
-				playerguy.health -= 5;
+				playerguy.health -= 3;
+                                System.out.println("Ouch" + " X:" + playerguy.x + " Y:" + playerguy.y);
                             }
 		} else if (input.isKeyDown(Input.KEY_RIGHT)) {
 			playerguy.sprite = playerguy.right;
@@ -168,7 +172,8 @@ public class AGE extends BasicGameState {
 				playerguy.x += fdelta;
                                 
 			}if (isTrap(playerguy.x + SIZE + fdelta, playerguy.y) || isTrap(playerguy.x + SIZE + fdelta, playerguy.y + SIZE - 1)) {
-				playerguy.health -= 5;
+				playerguy.health -= 3;
+                                System.out.println("Ouch" + " X:" + playerguy.x + " Y:" + playerguy.y);
                             }
                 } 
 		playerguy.rect.setLocation(playerguy.getplayershitboxX(), playerguy.getplayershitboxY());
@@ -186,7 +191,7 @@ public class AGE extends BasicGameState {
                 for (Enemy e: dudes) {
                     if (playerguy.rect.intersects(e.rect)) {
                         if (e.isVisible) {
-                        playerguy.health -= 10;
+                        playerguy.health -= 30;
                         e.isVisible = false;
                         }
                     }
