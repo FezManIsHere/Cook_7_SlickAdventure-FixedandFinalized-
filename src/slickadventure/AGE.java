@@ -12,6 +12,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 import org.newdawn.slick.tiled.TiledMap;
+import slickadventure.Enemy.Direction;
 public class AGE extends BasicGameState {
 	public Statue artifact;
         public ArrayList<Statue> winning = new ArrayList();
@@ -78,6 +79,10 @@ public class AGE extends BasicGameState {
                 winning.add(artifact);
                 playerguy = new Player();
                 bolt = new Lightning((int) playerguy.x + 5, (int) playerguy.y + 5);
+                bolt.plasmaLeft = 7;
+                baddy.setHealth(100);
+                baddy1.setHealth(100);
+                baddy2.setHealth(100);
         }
         public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
 	throws SlickException {
@@ -86,8 +91,7 @@ public class AGE extends BasicGameState {
 		camera.translateGraphics();
 		playerguy.sprite.draw((int) playerguy.x, (int) playerguy.y);
 		//g.setFont((org.newdawn.slick.Font) new Font("TimesRoman", Font.PLAIN, 10)); 
-                g.drawString("Health: " + playerguy.health, camera.cameraX + 10,
-		camera.cameraY + 10);
+                g.drawString("Health: " + playerguy.health + "    Plasma Left: " + bolt.plasmaLeft, camera.cameraX + 10,camera.cameraY + 10);
                 winning.stream().filter((s) -> (Statue.isvisible)).forEach((s) -> {
                     s.currentImage.draw(s.x, s.y);
                 if (bolt.isIsVisible()) {
@@ -109,13 +113,13 @@ public class AGE extends BasicGameState {
 		double rightlimit = (grassMap.getWidth() * SIZE) - (SIZE * 0.75);
 		float projectedright = playerguy.x + fdelta + SIZE;
 		boolean cangoright = projectedright < rightlimit;
-		if (input.isKeyDown(Input.KEY_SPACE)) {
+		if (input.isKeyPressed(Input.KEY_SPACE) && bolt.plasmaLeft > 0) {
                     bolt.setX ((int)playerguy.x + 16);
                     bolt.setY ((int)playerguy.y + 16);
                     //magic8ball.hitbox.setX(bolt.getX());
                     //magic8ball.hitbox.setY(bolt.getY());
                     bolt.setIsVisible(true);
-                    bolt.setTimeExists(100);
+                    bolt.setTimeExists(75);
                     if (playerguy.sprite == playerguy.right) {
                         if (bolt.getTimeExists() > 0 && (!isBlocked(bolt.x + 10, bolt.y))) {
                             bolt.xmove = 20;
@@ -131,8 +135,9 @@ public class AGE extends BasicGameState {
                         bolt.xmove = 0;
                         bolt.ymove = 20;
                     }
+                    bolt.plasmaLeft -= 1;
                     //magic8ball.setIsVisible(!bolt.isIsVisible());
-                }else if (input.isKeyDown(Input.KEY_UP)) {
+                }else if (input.isKeyDown(Input.KEY_UP) || input.isKeyDown(Input.KEY_W)) {
 			playerguy.sprite = playerguy.up;
 			float fdsc = (float) (fdelta - (SIZE * .15));
 			if (!(isBlocked(playerguy.x, playerguy.y - fdelta) || isBlocked((float) (playerguy.x + SIZE + 1.5), playerguy.y - fdelta))) {
@@ -140,11 +145,11 @@ public class AGE extends BasicGameState {
 				playerguy.y -= fdelta;
                                 
 			}if (isTrap(playerguy.x, playerguy.y - fdelta) || isTrap((float) (playerguy.x + SIZE + 1.5), playerguy.y - fdelta)) {
-				playerguy.health -= 3;
+				playerguy.health -= 4;
                                 System.out.println("Ouch" + " X:" + playerguy.x + " Y:" + playerguy.y);
                             }
                         
-		} else if (input.isKeyDown(Input.KEY_DOWN)) {
+		} else if (input.isKeyDown(Input.KEY_DOWN) || input.isKeyDown(Input.KEY_S)) {
 			playerguy.sprite = playerguy.down;
 			if (!isBlocked(playerguy.x, playerguy.y + SIZE*2 + fdelta) && !isBlocked(playerguy.x + SIZE - 1, playerguy.y + SIZE*2 + fdelta)) {
 				playerguy.sprite.update(delta);
@@ -152,27 +157,27 @@ public class AGE extends BasicGameState {
                                 
                                 
 			}if (isTrap(playerguy.x, playerguy.y - fdelta) || isTrap(playerguy.x + SIZE - 1, playerguy.y - fdelta)) {
-				playerguy.health -= 3;
+				playerguy.health -= 4;
                                 System.out.println("Ouch" + " X:" + playerguy.x + " Y:" + playerguy.y);
                             }
-		} else if (input.isKeyDown(Input.KEY_LEFT)) {
+		} else if (input.isKeyDown(Input.KEY_LEFT) || input.isKeyDown(Input.KEY_A)) {
 			playerguy.sprite = playerguy.left;
                         if (!(isBlocked(playerguy.x - fdelta, playerguy.y) || isBlocked(playerguy.x - fdelta, playerguy.y + SIZE - 1))) {
 				playerguy.sprite.update(delta);
 				playerguy.x -= fdelta;
                                 
 			}if (isTrap(playerguy.x - fdelta, playerguy.y) || isTrap(playerguy.x - fdelta, playerguy.y + SIZE - 1)) {
-				playerguy.health -= 3;
+				playerguy.health -= 4;
                                 System.out.println("Ouch" + " X:" + playerguy.x + " Y:" + playerguy.y);
                             }
-		} else if (input.isKeyDown(Input.KEY_RIGHT)) {
+		} else if (input.isKeyDown(Input.KEY_RIGHT) || input.isKeyDown(Input.KEY_D)) {
 			playerguy.sprite = playerguy.right;
                         if (cangoright && (!(isBlocked(playerguy.x + SIZE + fdelta, playerguy.y) || isBlocked(playerguy.x + SIZE + fdelta, playerguy.y + SIZE - 1)))) {
 				playerguy.sprite.update(delta);
 				playerguy.x += fdelta;
                                 
 			}if (isTrap(playerguy.x + SIZE + fdelta, playerguy.y) || isTrap(playerguy.x + SIZE + fdelta, playerguy.y + SIZE - 1)) {
-				playerguy.health -= 3;
+				playerguy.health -= 4;
                                 System.out.println("Ouch" + " X:" + playerguy.x + " Y:" + playerguy.y);
                             }
                 } 
@@ -184,14 +189,14 @@ public class AGE extends BasicGameState {
                 makevisible();
                 return _item;
             }).forEach((_item) -> {
-                sbg.enterState(3, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
+                sbg.enterState(4, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
             });
 		
                
                 for (Enemy e: dudes) {
                     if (playerguy.rect.intersects(e.rect)) {
                         if (e.isVisible) {
-                        playerguy.health -= 30;
+                        playerguy.health -= 20;
                         e.isVisible = false;
                         }
                     }
@@ -199,8 +204,19 @@ public class AGE extends BasicGameState {
                 }
                 for (Enemy e: dudes) {
                     if (bolt.hitbox.intersects(e.rect)) {
-                        if (e.isVisible) {
+                        if (e.isVisible && e.health < 20) {
                             e.isVisible = false;
+                        } else if (e.isVisible) {
+                            e.health -=30;
+                            if (e.mydirection == Direction.UP) {
+                                e.By -= 10;
+                            } else if (e.mydirection == Direction.DOWN) {
+                                e.By =+ 10;
+                            } else if (e.mydirection == Direction.LEFT) {
+                                e.Bx =+ 10;
+                            } else if (e.mydirection == Direction.RIGHT) {
+                                e.Bx -= 10;
+                            }
                         }
                     }
                 }
@@ -214,7 +230,7 @@ public class AGE extends BasicGameState {
                         } else {
                             bolt.setIsVisible(false);
                         }
-                    }
+                }
                 playerguy.health -= counter;
 		if(playerguy.health <= 0){
 			makevisible();

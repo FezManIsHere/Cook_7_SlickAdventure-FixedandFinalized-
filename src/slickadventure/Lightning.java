@@ -4,7 +4,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
 public class Lightning {
-    public int x, y, width, height, xmove, ymove;
+    public int x, y, width, height, xmove, ymove, plasmaLeft;
     private int dmg, hitboxX, hitboxY, timeExists;
     private boolean isVisible;
     Image orbpic;
@@ -16,6 +16,7 @@ public class Lightning {
         this.timeExists = 100;
         this.orbpic = new Image("res/plasma-globe.png");
         this.hitbox = new Rectangle (a, b, 32, 32);
+        this.plasmaLeft = 7;
     }
 
     public int getTimeExists() {
@@ -103,4 +104,13 @@ public class Lightning {
         this.setHitboxX((int) AGE.playerguy.x);
         this.setHitboxY((int) AGE.playerguy.y);
     }
+
+    public int getPlasmaLeft() {
+        return plasmaLeft;
+    }
+
+    public void setPlasmaLeft(int plasmaLeft) {
+        this.plasmaLeft = plasmaLeft;
+    }
+    
 }
