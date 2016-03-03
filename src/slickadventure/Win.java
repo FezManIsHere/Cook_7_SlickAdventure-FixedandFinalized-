@@ -53,6 +53,7 @@ public class Win extends BasicGameState {
                 AGE.baddy1.By = 2000;
                 AGE.baddy2.Bx = 3000;
                 AGE.baddy2.By = 3000;
+                AGE.bolt.plasmaLeft = 7;
                 AGE.bolt.setIsVisible(false);
                 AGE.baddy.isVisible = true;
                 AGE.baddy1.isVisible = true;

@@ -27,7 +27,10 @@ public class AGE extends BasicGameState {
 	private static final int SIZE = 32;
 	private static final int SCREEN_WIDTH = 1000;
 	private static final int SCREEN_HEIGHT = 750;
+        int prevHitTime, newHitTime;
 	public AGE(int xSize, int ySize) {
+        prevHitTime = 0;
+        newHitTime = 0;
         }
 	public void init(GameContainer gc, StateBasedGame sbg)
 	throws SlickException {
@@ -69,9 +72,9 @@ public class AGE extends BasicGameState {
 
             }
         }
-                baddy = new Enemy(1000, 1000);
-                baddy1 = new Enemy(2000, 2000);
-                baddy2 = new Enemy(3000, 3000);
+                baddy = new Enemy(434, 2827);
+                baddy1 = new Enemy(1815, 1826);
+                baddy2 = new Enemy(3088, 3057);
                 dudes.add(baddy);
                 dudes.add(baddy1);
                 dudes.add(baddy2);
@@ -91,7 +94,7 @@ public class AGE extends BasicGameState {
 		camera.translateGraphics();
 		playerguy.sprite.draw((int) playerguy.x, (int) playerguy.y);
 		//g.setFont((org.newdawn.slick.Font) new Font("TimesRoman", Font.PLAIN, 10)); 
-                g.drawString("Health: " + playerguy.health + "    Plasma Left: " + bolt.plasmaLeft, camera.cameraX + 10,camera.cameraY + 10);
+                g.drawString("Health: " + playerguy.health + "    Plasma Left: " + bolt.plasmaLeft + "      Player's X: " + playerguy.x + "  Player's Y: " + playerguy.y, camera.cameraX + 10,camera.cameraY + 10);
                 winning.stream().filter((s) -> (Statue.isvisible)).forEach((s) -> {
                     s.currentImage.draw(s.x, s.y);
                 if (bolt.isIsVisible()) {
