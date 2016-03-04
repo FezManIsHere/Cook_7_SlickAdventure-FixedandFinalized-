@@ -6,7 +6,9 @@ import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
@@ -28,6 +30,8 @@ public class AGE extends BasicGameState {
 	private static final int SCREEN_WIDTH = 1000;
 	private static final int SCREEN_HEIGHT = 750;
         int prevHitTime, newHitTime;
+        public static Music music;
+        public static Sound sound;
 	public AGE(int xSize, int ySize) {
         prevHitTime = 0;
         newHitTime = 0;
@@ -37,6 +41,8 @@ public class AGE extends BasicGameState {
 		gc.setTargetFrameRate(60);
 		gc.setShowFPS(false);
 		grassMap = new TiledMap("res/anewhope.tmx");
+                music = new Music("res/Ahrix Nova.ogg");
+                sound = new Sound("res/bong.ogg");
 		camera = new Camera(gc, grassMap);
 		Blocked.blocked = new boolean[grassMap.getWidth()][grassMap.getHeight()];
 		for (int xAxis = 0; xAxis < grassMap.getWidth(); xAxis++) {
@@ -86,7 +92,9 @@ public class AGE extends BasicGameState {
                 baddy.setHealth(100);
                 baddy1.setHealth(100);
                 baddy2.setHealth(100);
+                music.loop();
         }
+        
         public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
 	throws SlickException {
                 camera.centerOn((int) playerguy.x, (int) playerguy.y);
@@ -151,15 +159,12 @@ public class AGE extends BasicGameState {
 				playerguy.health -= 4;
                                 System.out.println("Ouch" + " X:" + playerguy.x + " Y:" + playerguy.y);
                             }
-                        
-		} else if (input.isKeyDown(Input.KEY_DOWN) || input.isKeyDown(Input.KEY_S)) {
+                } else if (input.isKeyDown(Input.KEY_DOWN) || input.isKeyDown(Input.KEY_S)) {
 			playerguy.sprite = playerguy.down;
 			if (!isBlocked(playerguy.x, playerguy.y + SIZE*2 + fdelta) && !isBlocked(playerguy.x + SIZE - 1, playerguy.y + SIZE*2 + fdelta)) {
 				playerguy.sprite.update(delta);
 				playerguy.y += fdelta;
-                                
-                                
-			}if (isTrap(playerguy.x, playerguy.y - fdelta) || isTrap(playerguy.x + SIZE - 1, playerguy.y - fdelta)) {
+                        }if (isTrap(playerguy.x, playerguy.y - fdelta) || isTrap(playerguy.x + SIZE - 1, playerguy.y - fdelta)) {
 				playerguy.health -= 4;
                                 System.out.println("Ouch" + " X:" + playerguy.x + " Y:" + playerguy.y);
                             }
@@ -168,8 +173,7 @@ public class AGE extends BasicGameState {
                         if (!(isBlocked(playerguy.x - fdelta, playerguy.y) || isBlocked(playerguy.x - fdelta, playerguy.y + SIZE - 1))) {
 				playerguy.sprite.update(delta);
 				playerguy.x -= fdelta;
-                                
-			}if (isTrap(playerguy.x - fdelta, playerguy.y) || isTrap(playerguy.x - fdelta, playerguy.y + SIZE - 1)) {
+                        }if (isTrap(playerguy.x - fdelta, playerguy.y) || isTrap(playerguy.x - fdelta, playerguy.y + SIZE - 1)) {
 				playerguy.health -= 4;
                                 System.out.println("Ouch" + " X:" + playerguy.x + " Y:" + playerguy.y);
                             }
@@ -220,6 +224,7 @@ public class AGE extends BasicGameState {
                             } else if (e.mydirection == Direction.RIGHT) {
                                 e.Bx -= 10;
                             }
+                            sound.play();
                         }
                     }
                 }

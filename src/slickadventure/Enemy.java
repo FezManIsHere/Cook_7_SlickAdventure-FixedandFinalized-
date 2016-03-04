@@ -21,7 +21,7 @@ public class Enemy {
     boolean[][] eblocked = Blocked.getblocked();
     private Animation skeleton, skup, skdown, skleft, skright, skwait, skdead;
 
-    int SIZE = 32;
+    int SIZE = 64;
     static boolean isAlive = true;
 
     float Bx;

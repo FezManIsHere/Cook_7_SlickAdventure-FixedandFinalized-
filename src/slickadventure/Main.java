@@ -10,6 +10,7 @@ public class Main extends StateBasedGame{
       super(gamename);
       this.addState(new Menu(xSize, ySize));
       this.addState(new AGE(xSize, ySize));
+//      this.addState(new AGES(xSize, ySize));
       this.addState(new Lose(xSize, ySize));
       this.addState(new Win(xSize, ySize));
    }
