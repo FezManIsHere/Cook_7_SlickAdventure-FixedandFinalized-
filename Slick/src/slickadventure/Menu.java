@@ -17,7 +17,7 @@ public class Menu extends BasicGameState {
     }
     public void init(GameContainer container, StateBasedGame game)
             throws SlickException {
-    	startimage = new Image("res/Menu.png");
+    	startimage = new Image("Slick/res/Menu.png");
         this.game = game;
 // TODO AutoÃ¢â‚¬Âgenerated method stub
     }

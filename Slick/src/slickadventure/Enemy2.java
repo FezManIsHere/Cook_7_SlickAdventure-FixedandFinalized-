@@ -15,7 +15,7 @@ import org.newdawn.slick.geom.Shape;
  *
  * @author Ramborux
  */
-public class Enemy {
+public class Enemy2 {
     private static int numberOfEnemies = 4;
     private int id;
     boolean[][] eblocked = Blocked.getblocked();
@@ -60,7 +60,7 @@ public class Enemy {
 
     Direction mydirection;
 
-    Enemy(int a, int b) throws SlickException {
+    Enemy2(int a, int b) throws SlickException {
         Bx = a;
         By = b;
         hitboxX = this.getskhitboxX();

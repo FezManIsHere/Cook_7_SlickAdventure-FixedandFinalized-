@@ -17,7 +17,7 @@ public class Lose extends BasicGameState {
     }
     public void init(GameContainer container, StateBasedGame game)
             throws SlickException {
-    	startimage = new Image("res/losss.png");
+    	startimage = new Image("Slick/res/losss.png");
         this.game = game;
     }
     public void render(GameContainer container, StateBasedGame game, Graphics g)

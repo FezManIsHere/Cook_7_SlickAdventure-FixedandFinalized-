@@ -30,8 +30,8 @@ import org.newdawn.slick.tiled.TiledMap;
         public ArrayList<Statue> winning = new ArrayList();
         public static Player playerguy;
         public static Lightning bolt;
-        public static Enemy baddy, baddy1, baddy2;
-        public ArrayList<Enemy> dudes = new ArrayList();
+        public static Enemy2 baddy3, baddy4, baddy5;
+        public ArrayList<Enemy2> dudes = new ArrayList();
 	private static TiledMap grassMap;
 	private static AppGameContainer app;
 	private static Camera camera;
@@ -52,9 +52,9 @@ import org.newdawn.slick.tiled.TiledMap;
 	throws SlickException {
 		gc.setTargetFrameRate(60);
 		gc.setShowFPS(false);
-		grassMap = new TiledMap("res/lvl.tmx");
-                music = new Music("res/Ahrix Nova.ogg");
-                sound = new Sound("res/bong.ogg");
+		grassMap = new TiledMap("Slick/res/lvl.tmx");
+                music = new Music("Slick/res/Ahrix Nova.ogg");
+                sound = new Sound("Slick/res/bong.ogg");
 		camera = new Camera(gc, grassMap);
 		BlockedMore.blockedmore = new boolean[grassMap.getWidth()][grassMap.getHeight()];
 		for (int xAxis = 0; xAxis < grassMap.getWidth(); xAxis++) {
@@ -90,20 +90,22 @@ import org.newdawn.slick.tiled.TiledMap;
 
             }
         }
-                baddy = new Enemy(434, 2827);
-                baddy1 = new Enemy(1815, 1826);
-                baddy2 = new Enemy(3088, 3057);
-                dudes.add(baddy);
-                dudes.add(baddy1);
-                dudes.add(baddy2);
+                baddy3 = new Enemy2(434, 2827);
+                baddy4 = new Enemy2(1815, 1826);
+                baddy5 = new Enemy2(3088, 3057);
+                dudes.add(baddy3);
+                dudes.add(baddy4);
+                dudes.add(baddy5);
                 artifact = new Statue(3070, 75);
                 winning.add(artifact);
                 playerguy = new Player();
+                playerguy.x = 35f;
+                playerguy.y = 34f;
                 bolt = new Lightning((int) playerguy.x + 5, (int) playerguy.y + 5);
                 bolt.plasmaLeft = 10;
-                baddy.setHealth(100);
-                baddy1.setHealth(100);
-                baddy2.setHealth(100);
+                baddy3.setHealth(100);
+                baddy4.setHealth(100);
+                baddy5.setHealth(100);
                 music.loop();
         }
         
@@ -121,11 +123,12 @@ import org.newdawn.slick.tiled.TiledMap;
                     bolt.orbpic.draw(bolt.getX(), bolt.getY());
                 }
                 });
-            for (Enemy e : dudes) {
+            for (Enemy2 e : dudes) {
                 if (e.isVisible) {
                     e.currentanime.draw(e.Bx, e.By);
+                    
                 }
-            }
+            } Statue.isvisible = true;
         }
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 	throws SlickException {
@@ -230,7 +233,7 @@ import org.newdawn.slick.tiled.TiledMap;
             }).forEach((_item) -> {
                 sbg.enterState(4, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
             });
-                for (Enemy e: dudes) {
+                for (Enemy2 e: dudes) {
                     if (playerguy.rect.intersects(e.rect)) {
                         if (e.isVisible) {
                         playerguy.health -= 20;
@@ -239,7 +242,7 @@ import org.newdawn.slick.tiled.TiledMap;
                     }
                 
                 }
-                for (Enemy e: dudes) {
+                for (Enemy2 e: dudes) {
                     if (bolt.hitbox.intersects(e.rect)) {
                         if (e.isVisible && e.health < 20) {
                             sound.play();
@@ -272,7 +275,7 @@ import org.newdawn.slick.tiled.TiledMap;
 			sbg.enterState(2, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
 		}
                 
-	for (Enemy e : dudes) {
+	for (Enemy2 e : dudes) {
             e.move();
         }
         }

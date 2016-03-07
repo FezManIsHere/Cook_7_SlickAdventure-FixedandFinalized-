@@ -20,7 +20,7 @@ public class Statue {
 	public static boolean isvisible = true;
 	Image currentImage;
 	Shape hitbox;
-	Image artifact = new Image("res/Statue.png");
+	Image artifact = new Image("Slick/res/Statue.png");
 
 	Statue(int a, int b) throws SlickException {
 		this.x = a;

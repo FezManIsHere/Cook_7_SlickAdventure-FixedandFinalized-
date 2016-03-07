@@ -14,7 +14,7 @@ public class Lightning {
         this.y = y;
         this.isVisible = false;
         this.timeExists = 100;
-        this.orbpic = new Image("res/plasma-globe.png");
+        this.orbpic = new Image("Slick/res/plasma-globe.png");
         this.hitbox = new Rectangle (a, b, 32, 32);
         this.plasmaLeft = 7;
     }

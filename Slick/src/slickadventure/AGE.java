@@ -42,9 +42,9 @@ public class AGE extends BasicGameState {
 	throws SlickException {
 		gc.setTargetFrameRate(60);
 		gc.setShowFPS(false);
-		grassMap = new TiledMap("res/anewhope.tmx");
-                music = new Music("res/Ahrix Nova.ogg");
-                sound = new Sound("res/bong.ogg");
+		grassMap = new TiledMap("Slick/res/anewhope.tmx");
+                music = new Music("Slick/res/Ahrix Nova.ogg");
+                sound = new Sound("Slick/res/bong.ogg");
 		camera = new Camera(gc, grassMap);
 		Blocked.blocked = new boolean[grassMap.getWidth()][grassMap.getHeight()];
 		for (int xAxis = 0; xAxis < grassMap.getWidth(); xAxis++) {
@@ -215,6 +215,10 @@ public class AGE extends BasicGameState {
                 return _item;
             }).forEach((_item) -> {
                 sbg.enterState(3, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
+                baddy.isVisible = false;
+                baddy1.isVisible = false;
+                baddy2.isVisible = false;
+                
             });
                 for (Enemy e: dudes) {
                     if (playerguy.rect.intersects(e.rect)) {

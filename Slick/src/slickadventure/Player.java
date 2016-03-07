@@ -18,7 +18,7 @@ public class Player {
 	public  Animation playeranime, up, down, left, right, sprite, wait;
         Player() throws SlickException {
             SpriteSheet runningSS = new SpriteSheet(
-				"res/MageOP.png",64, 64, 0);
+				"Slick/res/MageOP.png",64, 64, 0);
 		up = new Animation();
 		up.setAutoUpdate(true);
 		up.addFrame(runningSS.getSprite(0, 8), 330);
