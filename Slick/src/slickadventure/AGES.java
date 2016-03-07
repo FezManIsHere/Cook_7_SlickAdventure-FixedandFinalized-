@@ -13,6 +13,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
@@ -21,61 +22,64 @@ import org.newdawn.slick.tiled.TiledMap;
 
 /**
  *
- * @author Ramborux
+ * @author Geronimo
  */
-public class AGES extends BasicGameState {
-	public Statue artifact1;
-        public ArrayList<Statue> winning1 = new ArrayList();
-        public static Player playerguy1;
-        public static Lightning bolt1;
-        public static Enemy baddy3, baddy4, baddy5;
-        public ArrayList<Enemy> dudes1 = new ArrayList();
-	private static TiledMap grassMap1;
+
+   public class AGES extends BasicGameState {
+	public Statue artifact;
+        public ArrayList<Statue> winning = new ArrayList();
+        public static Player playerguy;
+        public static Lightning bolt;
+        public static Enemy baddy, baddy1, baddy2;
+        public ArrayList<Enemy> dudes = new ArrayList();
+	private static TiledMap grassMap;
 	private static AppGameContainer app;
 	private static Camera camera;
 	public static int counter = 0;
 	private static final int SIZE = 32;
 	private static final int SCREEN_WIDTH = 1000;
 	private static final int SCREEN_HEIGHT = 750;
-        int prevHitTime, newHitTime;
+        int prevHitTime = 0;
+        int newHitTime = 0;
+        public int newEnemyHitTime = 0;
+        public int prevEnemyHitTime = 0;
         public static Music music;
-	public AGES(int xSize, int ySize) {
-        prevHitTime = 0;
-        newHitTime = 0;
-        }
+        public static Sound sound;
+
+    AGES(int xSize, int ySize) {
+    }
 	public void init(GameContainer gc, StateBasedGame sbg)
 	throws SlickException {
 		gc.setTargetFrameRate(60);
 		gc.setShowFPS(false);
-                System.out.println("Working Directory = " +
-              System.getProperty("user.dir"));
-		grassMap1 = new TiledMap("Slick/res/lvl.tmx");
+		grassMap = new TiledMap("res/lvl.tmx");
                 music = new Music("res/Ahrix Nova.ogg");
-		camera = new Camera(gc, grassMap1);
-		BlockedMore.blockedmore = new boolean[grassMap1.getWidth()][grassMap1.getHeight()];
-		for (int xAxis = 0; xAxis < grassMap1.getWidth(); xAxis++) {
-			for (int yAxis = 0; yAxis < grassMap1.getHeight(); yAxis++) {
-				int tileID = grassMap1.getTileId(xAxis, yAxis, 1);
-				String value = grassMap1.getTileProperty(tileID,
+                sound = new Sound("res/bong.ogg");
+		camera = new Camera(gc, grassMap);
+		BlockedMore.blockedmore = new boolean[grassMap.getWidth()][grassMap.getHeight()];
+		for (int xAxis = 0; xAxis < grassMap.getWidth(); xAxis++) {
+			for (int yAxis = 0; yAxis < grassMap.getHeight(); yAxis++) {
+				int tileID = grassMap.getTileId(xAxis, yAxis, 1);
+				String value = grassMap.getTileProperty(tileID,
 				"blockedmore", "false");
                                 if ("true".equals(value)) {
                                     BlockedMore.blockedmore[xAxis][yAxis] = true;
 				}
 			}
 		}
-//                Trap.trap = new boolean[grassMap1.getWidth()][grassMap1.getHeight()];
-//		for (int xAxis = 0; xAxis < grassMap1.getWidth(); xAxis++) {
-//			for (int yAxis = 0; yAxis < grassMap1.getHeight(); yAxis++) {
-//				int tileID = grassMap1.getTileId(xAxis, yAxis, 2);
-//				String value = grassMap1.getTileProperty(tileID,
+//                Trap.trap = new boolean[grassMap.getWidth()][grassMap.getHeight()];
+//		for (int xAxis = 0; xAxis < grassMap.getWidth(); xAxis++) {
+//			for (int yAxis = 0; yAxis < grassMap.getHeight(); yAxis++) {
+//				int tileID = grassMap.getTileId(xAxis, yAxis, 2);
+//				String value = grassMap.getTileProperty(tileID,
 //				"trap", "false");
 //                                if ("true".equals(value)) {
 //                                    Trap.trap[xAxis][yAxis] = true;
 //				}
 //			}
 //		}
-                for (int xAxis = 0; xAxis < grassMap1.getWidth(); xAxis++) {
-            for (int yAxis = 0; yAxis < grassMap1.getHeight(); yAxis++) {
+                for (int xAxis = 0; xAxis < grassMap.getWidth(); xAxis++) {
+            for (int yAxis = 0; yAxis < grassMap.getHeight(); yAxis++) {
                 int xBlock = (int) xAxis;
                 int yBlock = (int) yAxis;
                 if (!BlockedMore.blockedmore[xBlock][yBlock]) {
@@ -86,38 +90,38 @@ public class AGES extends BasicGameState {
 
             }
         }
-                baddy3 = new Enemy(434, 2827);
-                baddy4 = new Enemy(1815, 1826);
-                baddy5 = new Enemy(3088, 3057);
-                dudes1.add(baddy3);
-                dudes1.add(baddy4);
-                dudes1.add(baddy5);
-                artifact1 = new Statue(3070, 75);
-                winning1.add(artifact1);
-                playerguy1 = new Player();
-                bolt1 = new Lightning((int) playerguy1.x + 5, (int) playerguy1.y + 5);
-                bolt1.plasmaLeft = 7;
-                baddy3.setHealth(100);
-                baddy4.setHealth(100);
-                baddy5.setHealth(100);
+                baddy = new Enemy(434, 2827);
+                baddy1 = new Enemy(1815, 1826);
+                baddy2 = new Enemy(3088, 3057);
+                dudes.add(baddy);
+                dudes.add(baddy1);
+                dudes.add(baddy2);
+                artifact = new Statue(3070, 75);
+                winning.add(artifact);
+                playerguy = new Player();
+                bolt = new Lightning((int) playerguy.x + 5, (int) playerguy.y + 5);
+                bolt.plasmaLeft = 10;
+                baddy.setHealth(100);
+                baddy1.setHealth(100);
+                baddy2.setHealth(100);
                 music.loop();
         }
         
         public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
 	throws SlickException {
-                camera.centerOn((int) playerguy1.x, (int) playerguy1.y);
+                camera.centerOn((int) playerguy.x, (int) playerguy.y);
 		camera.drawMap();
 		camera.translateGraphics();
-		playerguy1.sprite.draw((int) playerguy1.x, (int) playerguy1.y);
+		playerguy.sprite.draw((int) playerguy.x, (int) playerguy.y);
 		//g.setFont((org.newdawn.slick.Font) new Font("TimesRoman", Font.PLAIN, 10)); 
-                g.drawString("Health: " + playerguy1.health + "    Plasma Left: " + bolt1.plasmaLeft + "      Player's X: " + playerguy1.x + "  Player's Y: " + playerguy1.y, camera.cameraX + 10,camera.cameraY + 10);
-                winning1.stream().filter((s) -> (Statue.isvisible)).forEach((s) -> {
+                g.drawString("Health: " + playerguy.health + "    Plasma Left: " + bolt.plasmaLeft + "      Player's X: " + playerguy.x + "  Player's Y: " + playerguy.y, camera.cameraX + 10,camera.cameraY + 10);
+                winning.stream().filter((s) -> (Statue.isvisible)).forEach((s) -> {
                     s.currentImage.draw(s.x, s.y);
-                if (bolt1.isIsVisible()) {
-                    bolt1.orbpic.draw(bolt1.getX(), bolt1.getY());
+                if (bolt.isIsVisible()) {
+                    bolt.orbpic.draw(bolt.getX(), bolt.getY());
                 }
                 });
-            for (Enemy e : dudes1) {
+            for (Enemy e : dudes) {
                 if (e.isVisible) {
                     e.currentanime.draw(e.Bx, e.By);
                 }
@@ -127,65 +131,97 @@ public class AGES extends BasicGameState {
 	throws SlickException {
 		//counter += delta;
 		Input input = gc.getInput();
-		float fdelta = delta * playerguy1.speed;
-		playerguy1.setpdelta(fdelta);
-		double rightlimit = (grassMap1.getWidth() * SIZE) - (SIZE * 0.75);
-		float projectedright = playerguy1.x + fdelta + SIZE;
+		float fdelta = delta * playerguy.speed;
+		playerguy.setpdelta(fdelta);
+		double rightlimit = (grassMap.getWidth() * SIZE) - (SIZE * 0.75);
+		float projectedright = playerguy.x + fdelta + SIZE;
 		boolean cangoright = projectedright < rightlimit;
-		if (input.isKeyPressed(Input.KEY_SPACE) && bolt1.plasmaLeft > 0) {
-                    bolt1.setX ((int)playerguy1.x + 16);
-                    bolt1.setY ((int)playerguy1.y + 16);
-                    //magic8ball.hitbox.setX(bolt1.getX());
-                    //magic8ball.hitbox.setY(bolt1.getY());
-                    bolt1.setIsVisible(true);
-                    bolt1.setTimeExists(75);
-                    if (playerguy1.sprite == playerguy1.right) {
-                        if (bolt1.getTimeExists() > 0 && (!isBlockedMore(bolt1.x + 10, bolt1.y))) {
-                            bolt1.xmove = 20;
+		if (input.isKeyPressed(Input.KEY_SPACE) && bolt.plasmaLeft > 0) {
+                    bolt.setX ((int)playerguy.x + 16);
+                    bolt.setY ((int)playerguy.y + 16);
+                    //magic8ball.hitbox.setX(bolt.getX());
+                    //magic8ball.hitbox.setY(bolt.getY());
+                    bolt.setIsVisible(true);
+                    bolt.setTimeExists(50);
+                    if (playerguy.sprite == playerguy.right) {
+                        if (bolt.getTimeExists() > 0 && (!isBlockedMore(bolt.x + 10, bolt.y))) {
+                            bolt.xmove = 20;
                         }
-                        bolt1.ymove = 0;
-                    } else if (playerguy1.sprite == playerguy1.left) {
-                        bolt1.xmove = -20;
-                        bolt1.ymove = 0;
-                    } else if (playerguy1.sprite == playerguy1.up) {
-                        bolt1.xmove = 0;
-                        bolt1.ymove = -20;
-                    } else if (playerguy1.sprite == playerguy1.down) {
-                        bolt1.xmove = 0;
-                        bolt1.ymove = 20;
+                        bolt.ymove = 0;
+                    } else if (playerguy.sprite == playerguy.left) {
+                        bolt.xmove = -20;
+                        bolt.ymove = 0;
+                    } else if (playerguy.sprite == playerguy.up) {
+                        bolt.xmove = 0;
+                        bolt.ymove = -20;
+                    } else if (playerguy.sprite == playerguy.down) {
+                        bolt.xmove = 0;
+                        bolt.ymove = 20;
                     }
-                    bolt1.plasmaLeft -= 1;
-                    //magic8ball.setIsVisible(!bolt1.isIsVisible());
+                    bolt.plasmaLeft -= 1;
+                    //magic8ball.setIsVisible(!bolt.isIsVisible());
                 }else if (input.isKeyDown(Input.KEY_UP) || input.isKeyDown(Input.KEY_W)) {
-			playerguy1.sprite = playerguy1.up;
+			playerguy.sprite = playerguy.up;
 			float fdsc = (float) (fdelta - (SIZE * .15));
-			if (!(isBlockedMore(playerguy1.x, playerguy1.y - fdelta) || isBlockedMore((float) (playerguy1.x + SIZE + 1.5), playerguy1.y - fdelta))) {
-				playerguy1.sprite.update(delta);
-				playerguy1.y -= fdelta;
+			if (!(isBlockedMore(playerguy.x, playerguy.y - fdelta) || isBlockedMore((float) (playerguy.x + SIZE + 1.5), playerguy.y - fdelta))) {
+				playerguy.sprite.update(delta);
+				playerguy.y -= fdelta;
                                 
 			}
+//                        if (isTrap(playerguy.x, playerguy.y - fdelta) || isTrap((float) (playerguy.x + SIZE + 1.5), playerguy.y - fdelta)) {
+//                            newHitTime = (int) System.currentTimeMillis();
+//                            if (newHitTime - prevHitTime >= 500) {
+//                            playerguy.health -= 10;
+//                            prevHitTime = newHitTime;
+//                            }
+//                                //System.out.println("Ouch" + " X:" + playerguy.x + " Y:" + playerguy.y);
+//                            }
                 } else if (input.isKeyDown(Input.KEY_DOWN) || input.isKeyDown(Input.KEY_S)) {
-			playerguy1.sprite = playerguy1.down;
-			if (!isBlockedMore(playerguy1.x, playerguy1.y + SIZE*2 + fdelta) && !isBlockedMore(playerguy1.x + SIZE - 1, playerguy1.y + SIZE*2 + fdelta)) {
-				playerguy1.sprite.update(delta);
-				playerguy1.y += fdelta;
+			playerguy.sprite = playerguy.down;
+			if (!isBlockedMore(playerguy.x, playerguy.y + SIZE*2 + fdelta) && !isBlockedMore(playerguy.x + SIZE - 1, playerguy.y + SIZE*2 + fdelta)) {
+				playerguy.sprite.update(delta);
+				playerguy.y += fdelta;
                         }
+//                        if (isTrap(playerguy.x, playerguy.y - fdelta) || isTrap(playerguy.x + SIZE - 1, playerguy.y - fdelta)) {
+//                            newHitTime = (int) System.currentTimeMillis();
+//                            if (newHitTime - prevHitTime >= 500) {
+//                            playerguy.health -= 10;
+//                            prevHitTime = newHitTime;
+//                            }
+//                                //System.out.println("Ouch" + " X:" + playerguy.x + " Y:" + playerguy.y);
+//                            }
 		} else if (input.isKeyDown(Input.KEY_LEFT) || input.isKeyDown(Input.KEY_A)) {
-			playerguy1.sprite = playerguy1.left;
-                        if (!(isBlockedMore(playerguy1.x - fdelta, playerguy1.y) || isBlockedMore(playerguy1.x - fdelta, playerguy1.y + SIZE - 1))) {
-				playerguy1.sprite.update(delta);
-				playerguy1.x -= fdelta;
+			playerguy.sprite = playerguy.left;
+                        if (!(isBlockedMore(playerguy.x - fdelta, playerguy.y) || isBlockedMore(playerguy.x - fdelta, playerguy.y + SIZE - 1))) {
+				playerguy.sprite.update(delta);
+				playerguy.x -= fdelta;
                         }
+//                        if (isTrap(playerguy.x - fdelta, playerguy.y) || isTrap(playerguy.x - fdelta, playerguy.y + SIZE - 1)) {
+//                            newHitTime = (int) System.currentTimeMillis();
+//                            if (newHitTime - prevHitTime >= 500) {
+//                            playerguy.health -= 10;
+//                            prevHitTime = newHitTime;
+//                            }
+//                                //System.out.println("Ouch" + " X:" + playerguy.x + " Y:" + playerguy.y);
+//                            }
 		} else if (input.isKeyDown(Input.KEY_RIGHT) || input.isKeyDown(Input.KEY_D)) {
-			playerguy1.sprite = playerguy1.right;
-                        if (cangoright && (!(isBlockedMore(playerguy1.x + SIZE + fdelta, playerguy1.y) || isBlockedMore(playerguy1.x + SIZE + fdelta, playerguy1.y + SIZE - 1)))) {
-				playerguy1.sprite.update(delta);
-				playerguy1.x += fdelta;
+			playerguy.sprite = playerguy.right;
+                        if (cangoright && (!(isBlockedMore(playerguy.x + SIZE + fdelta, playerguy.y) || isBlockedMore(playerguy.x + SIZE + fdelta, playerguy.y + SIZE - 1)))) {
+				playerguy.sprite.update(delta);
+				playerguy.x += fdelta;
                                 
 			}
+//                        if (isTrap(playerguy.x + SIZE + fdelta, playerguy.y) || isTrap(playerguy.x + SIZE + fdelta, playerguy.y + SIZE - 1)) {
+//                            newHitTime = (int) System.currentTimeMillis();
+//                            if (newHitTime - prevHitTime >= 500) {
+//                            playerguy.health -= 10;
+//                            prevHitTime = newHitTime;
+//                            }
+//                                //ystem.out.println("Ouch" + " X:" + playerguy.x + " Y:" + playerguy.y);
+//                            }
                 } 
-		playerguy1.rect.setLocation(playerguy1.getplayershitboxX(), playerguy1.getplayershitboxY());
-                winning1.stream().filter((s) -> (playerguy1.rect.intersects(s.hitbox))).filter((s) -> (Statue.isvisible)).map((s) -> {
+		playerguy.rect.setLocation(playerguy.getplayershitboxX(), playerguy.getplayershitboxY());
+                winning.stream().filter((s) -> (playerguy.rect.intersects(s.hitbox))).filter((s) -> (Statue.isvisible)).map((s) -> {
                     Statue.isvisible = false;
                 return s;
             }).map((_item) -> {
@@ -194,53 +230,49 @@ public class AGES extends BasicGameState {
             }).forEach((_item) -> {
                 sbg.enterState(4, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
             });
-		
-               
-                for (Enemy e: dudes1) {
-                    if (playerguy1.rect.intersects(e.rect)) {
+                for (Enemy e: dudes) {
+                    if (playerguy.rect.intersects(e.rect)) {
                         if (e.isVisible) {
-                        playerguy1.health -= 20;
+                        playerguy.health -= 20;
                         e.isVisible = false;
                         }
                     }
                 
                 }
-                for (Enemy e: dudes1) {
-                    if (bolt1.hitbox.intersects(e.rect)) {
+                for (Enemy e: dudes) {
+                    if (bolt.hitbox.intersects(e.rect)) {
                         if (e.isVisible && e.health < 20) {
+                            sound.play();
                             e.isVisible = false;
                         } else if (e.isVisible) {
+                            newEnemyHitTime = (int) System.currentTimeMillis();
+                            if (newEnemyHitTime - prevEnemyHitTime >= 100) {
                             e.health -=30;
-                            if (e.mydirection == Enemy.Direction.UP) {
-                                e.By -= 10;
-                            } else if (e.mydirection == Enemy.Direction.DOWN) {
-                                e.By =+ 10;
-                            } else if (e.mydirection == Enemy.Direction.LEFT) {
-                                e.Bx =+ 10;
-                            } else if (e.mydirection == Enemy.Direction.RIGHT) {
-                                e.Bx -= 10;
+                            sound.play();
+                            prevEnemyHitTime = newEnemyHitTime;
                             }
                         }
                     }
                 }
-                if (bolt1.isIsVisible()) {
-                        if (bolt1.getTimeExists() > 0) {
-                            bolt1.setX(bolt1.x += bolt1.xmove);
-                            bolt1.setY(bolt1.y += bolt1.ymove);
-                            bolt1.hitbox.setX(bolt1.getX());
-                            bolt1.hitbox.setY(bolt1.getY());
-                            bolt1.countdown();
+                if (bolt.isIsVisible()) {
+                        if (bolt.getTimeExists() > 0) {
+                            bolt.setX(bolt.x += bolt.xmove);
+                            bolt.setY(bolt.y += bolt.ymove);
+                            bolt.hitbox.setX(bolt.getX());
+                            bolt.hitbox.setY(bolt.getY());
+                            bolt.countdown();
                         } else {
-                            bolt1.setIsVisible(false);
+                            bolt.setIsVisible(false);
                         }
                 }
-                playerguy1.health -= counter;
-		if(playerguy1.health <= 0){
+                playerguy.health -= counter;
+		if(playerguy.health <= 0){
 			makevisible();
+                        music.stop();
 			sbg.enterState(2, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
 		}
                 
-	for (Enemy e : dudes1) {
+	for (Enemy e : dudes) {
             e.move();
         }
         }
@@ -254,9 +286,9 @@ public class AGES extends BasicGameState {
 		int yBlock = (int) ty / SIZE;
 		return BlockedMore.blockedmore[xBlock][yBlock];
 	}
-        private boolean isTrap(float tx, float ty) {
-		int xBlock = (int) tx / SIZE;
-		int yBlock = (int) ty / SIZE;
-		return Trap.trap[xBlock][yBlock];
-	}
+//        private boolean isTrap(float tx, float ty) {
+//		int xBlock = (int) tx / SIZE;
+//		int yBlock = (int) ty / SIZE;
+//		return Trap.trap[xBlock][yBlock];
+//	}
 }

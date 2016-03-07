@@ -55,7 +55,7 @@ public class Lose extends BasicGameState {
                 AGE.bolt.setIsVisible(false);
                 AGE.playerguy.x = 35f;
                 AGE.playerguy.y = 34f;
-                AGE.bolt.plasmaLeft = 7;
+                AGE.bolt.plasmaLeft = 10;
                 game.enterState(1, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
                 break;
             case Input.KEY_2:

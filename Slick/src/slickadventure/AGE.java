@@ -29,16 +29,15 @@ public class AGE extends BasicGameState {
 	private static final int SIZE = 32;
 	private static final int SCREEN_WIDTH = 1000;
 	private static final int SCREEN_HEIGHT = 750;
-        int prevHitTime, newHitTime;
-        public int newEnemyHitTime, oldEnemyHitTime;
+        int prevHitTime = 0;
+        int newHitTime = 0;
+        public int newEnemyHitTime = 0;
+        public int prevEnemyHitTime = 0;
         public static Music music;
         public static Sound sound;
 	public AGE(int xSize, int ySize) {
-        prevHitTime = 0;
-        newHitTime = 0;
-        newEnemyHitTime = 0;
-        oldEnemyHitTime = 0;
         }
+        
 	public void init(GameContainer gc, StateBasedGame sbg)
 	throws SlickException {
 		gc.setTargetFrameRate(60);
@@ -91,7 +90,7 @@ public class AGE extends BasicGameState {
                 winning.add(artifact);
                 playerguy = new Player();
                 bolt = new Lightning((int) playerguy.x + 5, (int) playerguy.y + 5);
-                bolt.plasmaLeft = 7;
+                bolt.plasmaLeft = 10;
                 baddy.setHealth(100);
                 baddy1.setHealth(100);
                 baddy2.setHealth(100);
@@ -159,7 +158,11 @@ public class AGE extends BasicGameState {
 				playerguy.y -= fdelta;
                                 
 			}if (isTrap(playerguy.x, playerguy.y - fdelta) || isTrap((float) (playerguy.x + SIZE + 1.5), playerguy.y - fdelta)) {
-				playerguy.health -= 4;
+                            newHitTime = (int) System.currentTimeMillis();
+                            if (newHitTime - prevHitTime >= 500) {
+                            playerguy.health -= 10;
+                            prevHitTime = newHitTime;
+                            }
                                 //System.out.println("Ouch" + " X:" + playerguy.x + " Y:" + playerguy.y);
                             }
                 } else if (input.isKeyDown(Input.KEY_DOWN) || input.isKeyDown(Input.KEY_S)) {
@@ -168,7 +171,11 @@ public class AGE extends BasicGameState {
 				playerguy.sprite.update(delta);
 				playerguy.y += fdelta;
                         }if (isTrap(playerguy.x, playerguy.y - fdelta) || isTrap(playerguy.x + SIZE - 1, playerguy.y - fdelta)) {
-				playerguy.health -= 4;
+                            newHitTime = (int) System.currentTimeMillis();
+                            if (newHitTime - prevHitTime >= 500) {
+                            playerguy.health -= 10;
+                            prevHitTime = newHitTime;
+                            }
                                 //System.out.println("Ouch" + " X:" + playerguy.x + " Y:" + playerguy.y);
                             }
 		} else if (input.isKeyDown(Input.KEY_LEFT) || input.isKeyDown(Input.KEY_A)) {
@@ -177,7 +184,11 @@ public class AGE extends BasicGameState {
 				playerguy.sprite.update(delta);
 				playerguy.x -= fdelta;
                         }if (isTrap(playerguy.x - fdelta, playerguy.y) || isTrap(playerguy.x - fdelta, playerguy.y + SIZE - 1)) {
-				playerguy.health -= 4;
+                            newHitTime = (int) System.currentTimeMillis();
+                            if (newHitTime - prevHitTime >= 500) {
+                            playerguy.health -= 10;
+                            prevHitTime = newHitTime;
+                            }
                                 //System.out.println("Ouch" + " X:" + playerguy.x + " Y:" + playerguy.y);
                             }
 		} else if (input.isKeyDown(Input.KEY_RIGHT) || input.isKeyDown(Input.KEY_D)) {
@@ -187,7 +198,11 @@ public class AGE extends BasicGameState {
 				playerguy.x += fdelta;
                                 
 			}if (isTrap(playerguy.x + SIZE + fdelta, playerguy.y) || isTrap(playerguy.x + SIZE + fdelta, playerguy.y + SIZE - 1)) {
-				playerguy.health -= 4;
+                            newHitTime = (int) System.currentTimeMillis();
+                            if (newHitTime - prevHitTime >= 500) {
+                            playerguy.health -= 10;
+                            prevHitTime = newHitTime;
+                            }
                                 //ystem.out.println("Ouch" + " X:" + playerguy.x + " Y:" + playerguy.y);
                             }
                 } 
@@ -216,16 +231,11 @@ public class AGE extends BasicGameState {
                             sound.play();
                             e.isVisible = false;
                         } else if (e.isVisible) {
-                            sound.play();
+                            newEnemyHitTime = (int) System.currentTimeMillis();
+                            if (newEnemyHitTime - prevEnemyHitTime >= 100) {
                             e.health -=30;
-                            if (e.mydirection == Direction.UP) {
-                                e.By -= 10;
-                            } else if (e.mydirection == Direction.DOWN) {
-                                e.By =+ 10;
-                            } else if (e.mydirection == Direction.LEFT) {
-                                e.Bx =+ 10;
-                            } else if (e.mydirection == Direction.RIGHT) {
-                                e.Bx -= 10;
+                            sound.play();
+                            prevEnemyHitTime = newEnemyHitTime;
                             }
                         }
                     }
@@ -244,6 +254,7 @@ public class AGE extends BasicGameState {
                 playerguy.health -= counter;
 		if(playerguy.health <= 0){
 			makevisible();
+                        music.stop();
 			sbg.enterState(2, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
 		}
                 
