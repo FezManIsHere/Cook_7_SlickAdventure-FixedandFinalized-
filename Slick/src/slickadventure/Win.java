@@ -20,6 +20,7 @@ public class Win extends BasicGameState {
     public Image startimage;
     public Win(int xSize, int ySize) {
     }
+    
     public void init(GameContainer container, StateBasedGame game)
             throws SlickException {
     	startimage = new Image("Slick/res/win.png");

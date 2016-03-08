@@ -104,7 +104,7 @@ public class AGE extends BasicGameState {
 		camera.translateGraphics();
 		playerguy.sprite.draw((int) playerguy.x, (int) playerguy.y);
 		//g.setFont((org.newdawn.slick.Font) new Font("TimesRoman", Font.PLAIN, 10)); 
-                g.drawString("Health: " + playerguy.health + "    Plasma Left: " + bolt.plasmaLeft + "      Player's X: " + playerguy.x + "  Player's Y: " + playerguy.y, camera.cameraX + 10,camera.cameraY + 10);
+                g.drawString("Health: " + playerguy.health + "    Plasma Left: " + bolt.plasmaLeft, camera.cameraX + 10,camera.cameraY + 10);
                 winning.stream().filter((s) -> (Statue.isvisible)).forEach((s) -> {
                     s.currentImage.draw(s.x, s.y);
                 if (bolt.isIsVisible()) {
@@ -236,9 +236,10 @@ public class AGE extends BasicGameState {
                             e.isVisible = false;
                         } else if (e.isVisible) {
                             newEnemyHitTime = (int) System.currentTimeMillis();
-                            if (newEnemyHitTime - prevEnemyHitTime >= 100) {
+                            if (newEnemyHitTime - prevEnemyHitTime >= 300) {
                             e.health -=30;
                             sound.play();
+                            bolt.setIsVisible(false);
                             prevEnemyHitTime = newEnemyHitTime;
                             }
                         }
